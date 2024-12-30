@@ -1,0 +1,100 @@
+//INPUT
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class PhoneCalculator {
+    public static void main(String[] args) {
+        // Create the main frame
+        JFrame frame = new JFrame("Phone Calculator");
+        frame.setSize(400, 300);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new BorderLayout(10, 10));
+
+        // Create the input panel with labels and text fields
+        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 5, 5));
+        JLabel label1 = new JLabel("Add Number 1:");
+        JTextField textField1 = new JTextField();
+        JLabel label2 = new JLabel("Add Number 2:");
+        JTextField textField2 = new JTextField();
+
+        inputPanel.add(label1);
+        inputPanel.add(textField1);
+        inputPanel.add(label2);
+        inputPanel.add(textField2);
+
+        // Create the button panel with a 3x2 grid
+        JPanel buttonPanel = new JPanel(new GridLayout(2, 3, 5, 5));
+        JButton addButton = new JButton("Add");
+        JButton subtractButton = new JButton("Subtract");
+        JButton multiplyButton = new JButton("Multiply");
+        JButton divideButton = new JButton("Divide");
+        JButton resetButton = new JButton("Reset");
+        JButton resultButton = new JButton("Result");
+
+        buttonPanel.add(addButton);
+        buttonPanel.add(subtractButton);
+        buttonPanel.add(multiplyButton);
+        buttonPanel.add(divideButton);
+        buttonPanel.add(resetButton);
+        buttonPanel.add(resultButton);
+
+        // Create a result label to display results
+        JLabel resultLabel = new JLabel("Result: ", SwingConstants.CENTER);
+        resultLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        // Variables to store operation and result
+        final String[] operation = {""}; // Stores the selected operation
+        final double[] result = {0.0};   // Stores the calculated result
+
+        // Action listeners for operation buttons
+        addButton.addActionListener(e -> operation[0] = "Add");
+        subtractButton.addActionListener(e -> operation[0] = "Subtract");
+        multiplyButton.addActionListener(e -> operation[0] = "Multiply");
+        divideButton.addActionListener(e -> operation[0] = "Divide");
+
+        // Action listener for the Result button
+        resultButton.addActionListener(e -> {
+            try {
+                double num1 = Double.parseDouble(textField1.getText());
+                double num2 = Double.parseDouble(textField2.getText());
+
+                switch (operation[0]) {
+                    case "Add" -> result[0] = num1 + num2;
+                    case "Subtract" -> result[0] = num1 - num2;
+                    case "Multiply" -> result[0] = num1 * num2;
+                    case "Divide" -> {
+                        if (num2 == 0) throw new ArithmeticException("Cannot divide by zero");
+                        result[0] = num1 / num2;
+                    }
+                    default -> JOptionPane.showMessageDialog(frame, "Select an operation first!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+                resultLabel.setText("Result: " + result[0]);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(frame, "Enter valid numbers!", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (ArithmeticException ex) {
+                JOptionPane.showMessageDialog(frame, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Action listener for the Reset button
+        resetButton.addActionListener(e -> {
+            textField1.setText("");
+            textField2.setText("");
+            resultLabel.setText("Result: ");
+            operation[0] = "";
+        });
+
+        // Add components to the frame
+        frame.add(inputPanel, BorderLayout.NORTH);
+        frame.add(buttonPanel, BorderLayout.CENTER);
+        frame.add(resultLabel, BorderLayout.SOUTH);
+
+        // Set frame visibility
+        frame.setVisible(true);
+    }
+}
+//OUTPUT
+A VIRTUAL CALCULATOR WOULD BE CREATED
